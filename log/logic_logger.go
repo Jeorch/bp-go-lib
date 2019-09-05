@@ -1,4 +1,4 @@
-package bp_log
+package log
 
 import (
 	"fmt"

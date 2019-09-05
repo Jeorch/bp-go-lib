@@ -1,7 +1,7 @@
 package test
 
 import (
-	bp_log "github.com/PharbersDeveloper/bp-go-lib/bp-log"
+	"github.com/PharbersDeveloper/bp-go-lib/log"
 	"os"
 	"testing"
 )
@@ -15,12 +15,14 @@ func TestLogicLogger_Info(t *testing.T) {
 	traceId := "trace-001"
 	userId := "trace-001"
 
-	bp_log.NewLogicLogger().SetJobId(jobId).SetTraceId(traceId).SetUserId(userId).Info("aaa")
-	bp_log.NewLogicLogger().SetJobId(jobId).SetTraceId(traceId).SetUserId(userId).Infof("aaa=%s", "aaa")
-	bp_log.NewLogicLogger().SetJobId(jobId).SetTraceId(traceId).SetUserId(userId).Infoln("aaa", "aaa")
-	bp_log.NewLogicLogger().SetJobId(jobId).SetUserId(userId).Trace("ttt")
+	log.NewLogicLogger().SetJobId(jobId).SetTraceId(traceId).SetUserId(userId).Info("aaa")
+	log.NewLogicLogger().Info("aaa")
+	log.NewLogicLogger().SetJobId(jobId).SetTraceId(traceId).SetUserId(userId).Infof("aaa=%s", "aaa")
+	log.NewLogicLogger().SetJobId(jobId).SetTraceId(traceId).SetUserId(userId).Infoln("aaa", "aaa")
 
-	bLogger := bp_log.NewLogicLogger()
+	log.NewLogicLogger().SetJobId(jobId).SetUserId(userId).Trace("ttt")
+
+	bLogger := log.NewLogicLogger()
 	bLogger.SetJobId(jobId).SetTraceId(traceId).SetUserId(userId).Info("bbb")
 	bLogger.Info("bbb")
 }
