@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/PharbersDeveloper/bp-go-lib/env"
 	"github.com/sirupsen/logrus"
 	"os"
 	"strings"
@@ -47,8 +48,8 @@ func (f *LogicLoggerFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	//lLogger.Time = entry.Time.Format(defaultTimestampFormat)
 	lLogger.Time = entry.Time.Format(f.TimestampFormat)
 	lLogger.Hostname, _ = os.Hostname()
-	//根据项目环境变量 $PROJECT_NAME => 填充项目名（默认空）
-	lLogger.ProjectName = os.Getenv("PROJECT_NAME")
+	//根据项目环境变量设置项目名（默认空）
+	lLogger.ProjectName = os.Getenv(env.ProjectName)
 
 	funcVal := entry.Caller.Function
 	fileVal := fmt.Sprintf("%s:%d", entry.Caller.File, entry.Caller.Line)

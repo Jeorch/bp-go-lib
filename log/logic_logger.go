@@ -1,6 +1,7 @@
 package log
 
 import (
+	"github.com/PharbersDeveloper/bp-go-lib/env"
 	"github.com/sirupsen/logrus"
 	"os"
 	"time"
@@ -22,8 +23,8 @@ func initLogicLogger() {
 	logrus.SetReportCaller(true)
 
 	// Set logic logger formatter
-	// 根据项目环境变量 $BP_LOG_TIME_FORMAT => 时间格式（默认time.RFC3339）
-	timeFormat := os.Getenv("BP_LOG_TIME_FORMAT")
+	// 根据项目环境变量设置时间格式（默认time.RFC3339）
+	timeFormat := os.Getenv(env.LogTimeFormat)
 	switch timeFormat {
 	case "":
 		logrus.SetFormatter(&LogicLoggerFormatter{TimestampFormat:defaultTimestampFormat})
@@ -31,8 +32,8 @@ func initLogicLogger() {
 		logrus.SetFormatter(&LogicLoggerFormatter{TimestampFormat: timeFormat})
 	}
 
-	//根据项目环境变量 $BP_LOG_OUTPUT => 打印还是写文件(默认打印)
-	logOutput := os.Getenv("BP_LOG_OUTPUT")
+	//根据项目环境变量设置打印还是写文件(默认打印)
+	logOutput := os.Getenv(env.LogOutput)
 	switch logOutput {
 	case "", "console":
 		logrus.SetOutput(os.Stdout)
@@ -44,8 +45,8 @@ func initLogicLogger() {
 		logrus.SetOutput(file)
 	}
 
-	//根据项目环境变量 $BP_LOG_LEVEL => 设置日志等级（默认trace）
-	logLevel := os.Getenv("BP_LOG_LEVEL")
+	//根据项目环境变量设置日志等级（默认trace）
+	logLevel := os.Getenv(env.LogLevel)
 	switch logLevel {
 	case "":
 		logrus.SetLevel(logrus.TraceLevel)
@@ -60,7 +61,6 @@ func initLogicLogger() {
 }
 
 // NewLogicLoggerBuilder => Generate a LogicLogger.
-// Require env $PROJECT_NAME $BP_LOG_TIME_FORMAT $BP_LOG_OUTPUT $BP_LOG_LEVEL
 func NewLogicLoggerBuilder() (lg *logicLogger) {
 	initLogicLogger()
 	return new(logicLogger)
