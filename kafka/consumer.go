@@ -8,21 +8,21 @@ import (
 	"syscall"
 )
 
-type BpConsumer struct {
+type bpConsumer struct {
 	consumer *kafka.Consumer
 }
 
-func (bpb *BpKafkaBuilder) BuildConsumer() (*BpConsumer, error) {
+func (bpb *BpKafkaBuilder) BuildConsumer() (*bpConsumer, error) {
 	c, err := kafka.NewConsumer(bpb.config)
 	if err != nil {
 		return nil, err
 	}
-	bpp := new(BpConsumer)
+	bpp := new(bpConsumer)
 	bpp.consumer = c
 	return bpp, err
 }
 
-func (bpc *BpConsumer) Consume(topic string, subscribeFunc func(interface{}, interface{}) ) (err error) {
+func (bpc *bpConsumer) Consume(topic string, subscribeFunc func(interface{}, interface{}) ) (err error) {
 
 	err = bpc.consumer.Subscribe(topic, nil)
 	if err != nil {
@@ -47,9 +47,6 @@ func (bpc *BpConsumer) Consume(topic string, subscribeFunc func(interface{}, int
 			switch e := ev.(type) {
 			case *kafka.Message:
 				subscribeFunc(e.Key, e.Value)
-				if e.Headers != nil {
-					fmt.Printf("%% Headers: %v\n", e.Headers)
-				}
 			case kafka.Error:
 				// Errors should generally be considered
 				// informational, the client will try to

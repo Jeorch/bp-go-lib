@@ -5,21 +5,21 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-type BpProducer struct {
+type bpProducer struct {
 	producer *kafka.Producer
 }
 
-func (bpb *BpKafkaBuilder) BuildProducer() (*BpProducer, error) {
+func (bpb *BpKafkaBuilder) BuildProducer() (*bpProducer, error) {
 	p, err := kafka.NewProducer(bpb.config)
 	if err != nil {
 		return nil, err
 	}
-	bpp := new(BpProducer)
+	bpp := new(bpProducer)
 	bpp.producer = p
 	return bpp, err
 }
 
-func (bpp *BpProducer) Produce(topic string, key []byte, value []byte) (err error) {
+func (bpp *bpProducer) Produce(topic string, key []byte, value []byte) (err error) {
 
 	// Optional delivery channel, if not specified the Producer object's
 	// .Events channel is used.
@@ -29,7 +29,6 @@ func (bpp *BpProducer) Produce(topic string, key []byte, value []byte) (err erro
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Key:          	key,
 		Value:          value,
-		Headers:        []kafka.Header{{Key: "myTestHeader", Value: []byte("header values are binary")}},
 	}
 
 	err = bpp.producer.Produce(&msg, deliveryChan)

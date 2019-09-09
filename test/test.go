@@ -1,3 +1,4 @@
+// Package test is bp-go-lib's common test constants or functions.
 package test
 
 import (
@@ -5,7 +6,7 @@ import (
 	"os"
 )
 
-func setEnv() {
+func SetEnv() {
 	//项目范围内的环境变量
 	_ = os.Setenv(env.ProjectName, "bp-go-lib")
 

@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "name": "ExampleRequest",
+  "namespace": "com.pharbers.kafka.schema",
+  "fields": [{
+    "name": "JobId",
+    "type": "string"
+  }, {
+    "name": "Tag",
+    "type": "string"
+  },  {
+    "name": "configs",
+    "type": {
+      "items": "string",
+      "type": "array"
+    }
+  }
+  ]
+}

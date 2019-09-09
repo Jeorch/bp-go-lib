@@ -1,3 +1,4 @@
+// Package env is bp-go-lib's environment keys definition.
 package env
 
 const (

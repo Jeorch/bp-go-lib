@@ -11,7 +11,7 @@ const (
 	defaultTimestampFormat = time.RFC3339
 )
 
-type logicLogger struct {
+type logicLoggerBuilder struct {
 	jobId       string
 	traceId     string
 	userId      string
@@ -60,37 +60,37 @@ func initLogicLogger() {
 
 }
 
-// NewLogicLoggerBuilder => Generate a LogicLogger.
-func NewLogicLoggerBuilder() (lg *logicLogger) {
+// NewLogicLoggerBuilder generate a logicLoggerBuilder.
+func NewLogicLoggerBuilder() (lg *logicLoggerBuilder) {
 	initLogicLogger()
-	return new(logicLogger)
+	return new(logicLoggerBuilder)
 }
 
-func (lg *logicLogger) Build() *logrus.Entry {
+func (lg *logicLoggerBuilder) Build() *logrus.Entry {
 	return logrus.WithFields(logrus.Fields{"JobId": lg.jobId, "TraceId": lg.traceId, "UserId": lg.userId})
 }
 
-func (lg *logicLogger) SetJobId(jobId string) *logicLogger {
+func (lg *logicLoggerBuilder) SetJobId(jobId string) *logicLoggerBuilder {
 	lg.jobId = jobId
 	return lg
 }
 
-func (lg *logicLogger) SetTraceId(traceId string) *logicLogger {
+func (lg *logicLoggerBuilder) SetTraceId(traceId string) *logicLoggerBuilder {
 	lg.traceId = traceId
 	return lg
 }
 
-func (lg *logicLogger) SetUserId(userId string) *logicLogger {
+func (lg *logicLoggerBuilder) SetUserId(userId string) *logicLoggerBuilder {
 	lg.userId = userId
 	return lg
 }
 
-//func (lg *logicLogger) SetFormatter(formatter logrus.Formatter) {
+//func (lg *logicLoggerBuilder) SetFormatter(formatter logrus.Formatter) {
 //	logrus.SetFormatter(formatter)
 //}
 
 // AddHook adds a hook to the standard logger hooks.
-func (lg *logicLogger) AddHook(hook logrus.Hook) {
+func (lg *logicLoggerBuilder) AddHook(hook logrus.Hook) {
 	logrus.AddHook(hook)
 }
 
