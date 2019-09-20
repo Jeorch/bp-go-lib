@@ -2,19 +2,23 @@ package log
 
 import (
 	"github.com/PharbersDeveloper/bp-go-lib/env"
+	rollingfile "github.com/lanziliang/logrus-rollingfile-hook"
 	"github.com/sirupsen/logrus"
 	"os"
+	"strconv"
 	"time"
 )
 
 const (
-	defaultTimestampFormat = time.RFC3339
+	defaultTimestampFormat   = time.RFC3339
+	defaultRollingTimeFormat = "2006-01-02"
+	defaultRollingMax = "7"
 )
 
 type logicLoggerBuilder struct {
-	jobId       string
-	traceId     string
-	userId      string
+	jobId   string
+	traceId string
+	userId  string
 }
 
 func initLogicLogger() {
@@ -27,9 +31,25 @@ func initLogicLogger() {
 	timeFormat := os.Getenv(env.LogTimeFormat)
 	switch timeFormat {
 	case "":
-		logrus.SetFormatter(&LogicLoggerFormatter{TimestampFormat:defaultTimestampFormat})
+		logrus.SetFormatter(&LogicLoggerFormatter{TimestampFormat: defaultTimestampFormat})
 	default:
 		logrus.SetFormatter(&LogicLoggerFormatter{TimestampFormat: timeFormat})
+	}
+
+	//根据项目环境变量设置翻滚时间格式（默认每日一翻滚）
+	logRollTimeFormat := os.Getenv(env.LogRollingTimeFormat)
+	if logRollTimeFormat == "" {
+		logRollTimeFormat = defaultRollingTimeFormat
+	}
+
+	//根据项目环境变量设置日志文件保存的最大数量（默认7）
+	logRollingMax := os.Getenv(env.LogRollingMax)
+	if logRollingMax == "" {
+		logRollingMax = defaultRollingMax
+	}
+	maxRoll, err := strconv.Atoi(logRollingMax)
+	if err != nil {
+		panic(err.Error())
 	}
 
 	//根据项目环境变量设置打印还是写文件(默认打印)
@@ -38,11 +58,11 @@ func initLogicLogger() {
 	case "", "console":
 		logrus.SetOutput(os.Stdout)
 	default:
-		file, err := os.OpenFile(logOutput, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+		hook, err := rollingfile.NewRollingFileTimeHook(logOutput, logRollTimeFormat, maxRoll)
 		if err != nil {
-			panic(err.Error())
+			panic(err)
 		}
-		logrus.SetOutput(file)
+		logrus.AddHook(hook)
 	}
 
 	//根据项目环境变量设置日志等级（默认trace）
@@ -90,7 +110,6 @@ func (lg *logicLoggerBuilder) SetUserId(userId string) *logicLoggerBuilder {
 //}
 
 // AddHook adds a hook to the standard logger hooks.
-func (lg *logicLoggerBuilder) AddHook(hook logrus.Hook) {
-	logrus.AddHook(hook)
-}
-
+//func (lg *logicLoggerBuilder) AddHook(hook logrus.Hook) {
+//	logrus.AddHook(hook)
+//}
