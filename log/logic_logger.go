@@ -6,6 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -14,6 +15,8 @@ const (
 	defaultRollingTimeFormat = "2006-01-02"
 	defaultRollingMax = "7"
 )
+
+var once sync.Once
 
 type logicLoggerBuilder struct {
 	jobId   string
@@ -82,7 +85,7 @@ func initLogicLogger() {
 
 // NewLogicLoggerBuilder generate a logicLoggerBuilder.
 func NewLogicLoggerBuilder() (lg *logicLoggerBuilder) {
-	initLogicLogger()
+	once.Do(initLogicLogger)
 	return new(logicLoggerBuilder)
 }
 

@@ -12,9 +12,9 @@ func SetEnv() {
 
 	//log
 	_ = os.Setenv(env.LogTimeFormat, "2006-01-02 15:04:05")
-	_ = os.Setenv(env.LogOutput, "console")
+	//_ = os.Setenv(env.LogOutput, "console")
 	_ = os.Setenv(env.LogOutput, "./tmp/bp-go-lib.log")
-	//_ = os.Setenv(env.LogLevel, "info")
+	_ = os.Setenv(env.LogLevel, "info")
 
 	//kafka
 	_ = os.Setenv(env.KafkaConfigPath, "../resources/kafka_config.json")
