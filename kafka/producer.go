@@ -9,7 +9,7 @@ type bpProducer struct {
 	producer *kafka.Producer
 }
 
-func (bpb *BpKafkaBuilder) BuildProducer() (*bpProducer, error) {
+func (bpb *bpKafkaBuilder) BuildProducer() (*bpProducer, error) {
 	p, err := kafka.NewProducer(bpb.config)
 	if err != nil {
 		return nil, err

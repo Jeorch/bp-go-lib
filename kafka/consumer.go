@@ -12,7 +12,7 @@ type bpConsumer struct {
 	consumer *kafka.Consumer
 }
 
-func (bpb *BpKafkaBuilder) BuildConsumer() (*bpConsumer, error) {
+func (bpb *bpKafkaBuilder) BuildConsumer() (*bpConsumer, error) {
 	c, err := kafka.NewConsumer(bpb.config)
 	if err != nil {
 		return nil, err

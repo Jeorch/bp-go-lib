@@ -18,5 +18,6 @@ func SetEnv() {
 
 	//kafka
 	_ = os.Setenv(env.KafkaConfigPath, "../resources/kafka_config.json")
+	_ = os.Setenv(env.KafkaSchemaRegistryUrl, "http://123.56.179.133:8081")
 
 }

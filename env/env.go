@@ -13,6 +13,7 @@ const (
 	LogRollingMax        = "BP_LOG_ROLLING_MAX"
 
 	//kafka env key
-	KafkaConfigEnable = "BP_KAFKA_CONFIG_ENABLE"
-	KafkaConfigPath   = "BP_KAFKA_CONFIG_PATH"
+	KafkaConfigEnable      = "BP_KAFKA_CONFIG_ENABLE"
+	KafkaConfigPath        = "BP_KAFKA_CONFIG_PATH"
+	KafkaSchemaRegistryUrl = "BP_KAFKA_SCHEMA_REGISTRY_URL"
 )

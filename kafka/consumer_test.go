@@ -1,10 +1,12 @@
 package kafka
 
 import (
-	"bytes"
 	"fmt"
+	"github.com/PharbersDeveloper/bp-go-lib/env"
 	"github.com/PharbersDeveloper/bp-go-lib/kafka/record"
 	"github.com/PharbersDeveloper/bp-go-lib/test"
+	kafkaAvro "github.com/elodina/go-kafka-avro"
+	"os"
 	"testing"
 )
 
@@ -37,7 +39,8 @@ func TestConsumeAvro(t *testing.T) {
 	if err != nil {
 		panic(err.Error())
 	}
-	err = c.Consume("test001", subscribeAvroFunc)
+	topic := "test006"
+	err = c.Consume(topic, subscribeAvroFunc)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -46,13 +49,17 @@ func TestConsumeAvro(t *testing.T) {
 
 func subscribeAvroFunc(key interface{}, value interface{}) {
 
-	buf := bytes.NewBuffer(value.([]byte))
-
-	newDemoStruct, err := record.DeserializeExampleRequest(buf)
-	if err != nil {
-		fmt.Printf("Error deserializing struct: %v\n", err)
-		return
+	schemaRegistryUrl := os.Getenv(env.KafkaSchemaRegistryUrl)
+	if schemaRegistryUrl == "" {
+		panic(fmt.Sprintf("no kafka config file path set in %s env", env.KafkaSchemaRegistryUrl))
 	}
 
-	fmt.Printf("subscribeFunc => key=%s, value=%v\n", string(key.([]byte)), newDemoStruct)
+	decoder := kafkaAvro.NewKafkaAvroDecoder(schemaRegistryUrl)
+
+	var msgValue record.ExampleRequest
+	err := decoder.DecodeSpecific(value.([]byte), &msgValue)
+	if err != nil {
+		panic(err.Error())
+	}
+	fmt.Printf("msg => key=%s, value=%v\n", string(key.([]byte)), msgValue)
 }
