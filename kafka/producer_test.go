@@ -27,11 +27,11 @@ func TestProduceAvro(t *testing.T) {
 
 	topic := "test006"
 	requestRecord := record.ExampleRequest{
-		JobId:   "job-001",
+		JobId:   "job-002",
 		Tag:     "MAX",
 		Configs: []string{
-			"config-101",
-			"config-202",
+			"config-1",
+			"config-2",
 		},
 	}
 

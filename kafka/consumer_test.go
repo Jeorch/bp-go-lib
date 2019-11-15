@@ -2,11 +2,8 @@ package kafka
 
 import (
 	"fmt"
-	"github.com/PharbersDeveloper/bp-go-lib/env"
 	"github.com/PharbersDeveloper/bp-go-lib/kafka/record"
 	"github.com/PharbersDeveloper/bp-go-lib/test"
-	kafkaAvro "github.com/elodina/go-kafka-avro"
-	"os"
 	"testing"
 )
 
@@ -49,15 +46,9 @@ func TestConsumeAvro(t *testing.T) {
 
 func subscribeAvroFunc(key interface{}, value interface{}) {
 
-	schemaRegistryUrl := os.Getenv(env.KafkaSchemaRegistryUrl)
-	if schemaRegistryUrl == "" {
-		panic(fmt.Sprintf("no kafka config file path set in %s env", env.KafkaSchemaRegistryUrl))
-	}
-
-	decoder := kafkaAvro.NewKafkaAvroDecoder(schemaRegistryUrl)
-
 	var msgValue record.ExampleRequest
-	err := decoder.DecodeSpecific(value.([]byte), &msgValue)
+	//注意传参为record的地址
+	err := DecodeAvroRecord(value.([]byte), &msgValue)
 	if err != nil {
 		panic(err.Error())
 	}

@@ -134,3 +134,17 @@ func EncodeAvroRecord(obj container.AvroRecord) ([]byte, error) {
 
 	return buffer.Bytes(), nil
 }
+
+func DecodeAvroRecord(bytes []byte, obj interface{}) error {
+	schemaRegistryUrl := os.Getenv(env.KafkaSchemaRegistryUrl)
+	if schemaRegistryUrl == "" {
+		panic(fmt.Sprintf("no kafka config file path set in %s env", env.KafkaSchemaRegistryUrl))
+	}
+
+	decoder := kafkaAvro.NewKafkaAvroDecoder(schemaRegistryUrl)
+
+	//此处的obj应为record的指针
+	err := decoder.DecodeSpecific(bytes, obj)
+
+	return err
+}
