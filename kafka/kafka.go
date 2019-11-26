@@ -24,13 +24,13 @@ var (
 	conf *kafka.ConfigMap
 )
 
-type bpKafkaBuilder struct {
+type BpKafkaBuilder struct {
 	config *kafka.ConfigMap
 }
 
-func NewKafkaBuilder() *bpKafkaBuilder {
+func NewKafkaBuilder() *BpKafkaBuilder {
 	once.Do(generateKafkaConfig)
-	bpb := new(bpKafkaBuilder)
+	bpb := new(BpKafkaBuilder)
 	bpb.config = conf
 	return bpb
 }
@@ -38,7 +38,7 @@ func NewKafkaBuilder() *bpKafkaBuilder {
 // SetConfig set kafka config by ConfigMap.
 // ConfigMap is a map contaning standard librdkafka configuration properties as documented in:
 // https://github.com/edenhill/librdkafka/tree/master/CONFIGURATION.md
-func (bpb *bpKafkaBuilder) SetConfig(configMap *kafka.ConfigMap) *bpKafkaBuilder {
+func (bpb *BpKafkaBuilder) SetConfig(configMap *kafka.ConfigMap) *BpKafkaBuilder {
 	bpb.config = configMap
 	return bpb
 }
@@ -46,7 +46,7 @@ func (bpb *bpKafkaBuilder) SetConfig(configMap *kafka.ConfigMap) *bpKafkaBuilder
 // AddConfig add kafka config by ConfigMap.
 // ConfigMap is a map contaning standard librdkafka configuration properties as documented in:
 // https://github.com/edenhill/librdkafka/tree/master/CONFIGURATION.md
-func (bpb *bpKafkaBuilder) AddConfig(configMap *kafka.ConfigMap) *bpKafkaBuilder {
+func (bpb *BpKafkaBuilder) AddConfig(configMap *kafka.ConfigMap) *BpKafkaBuilder {
 	for k, v := range *configMap {
 		err := bpb.config.SetKey(k, v)
 		if err != nil {
@@ -56,7 +56,7 @@ func (bpb *bpKafkaBuilder) AddConfig(configMap *kafka.ConfigMap) *bpKafkaBuilder
 	return bpb
 }
 
-func (bpb *bpKafkaBuilder) SetGroupId(id string) *bpKafkaBuilder {
+func (bpb *BpKafkaBuilder) SetGroupId(id string) *BpKafkaBuilder {
 	err := bpb.config.SetKey(groupIdKey, id)
 	if err != nil {
 		panic(err.Error())

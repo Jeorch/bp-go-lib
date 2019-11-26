@@ -8,21 +8,21 @@ import (
 	"syscall"
 )
 
-type bpConsumer struct {
+type BpConsumer struct {
 	consumer *kafka.Consumer
 }
 
-func (bpb *bpKafkaBuilder) BuildConsumer() (*bpConsumer, error) {
+func (bpb *BpKafkaBuilder) BuildConsumer() (*BpConsumer, error) {
 	c, err := kafka.NewConsumer(bpb.config)
 	if err != nil {
 		return nil, err
 	}
-	bpp := new(bpConsumer)
+	bpp := new(BpConsumer)
 	bpp.consumer = c
 	return bpp, err
 }
 
-func (bpc *bpConsumer) Consume(topic string, subscribeFunc func(interface{}, interface{}) ) (err error) {
+func (bpc *BpConsumer) Consume(topic string, subscribeFunc func(interface{}, interface{}) ) (err error) {
 
 	err = bpc.consumer.Subscribe(topic, nil)
 	if err != nil {

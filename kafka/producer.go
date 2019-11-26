@@ -5,21 +5,21 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-type bpProducer struct {
+type BpProducer struct {
 	producer *kafka.Producer
 }
 
-func (bpb *bpKafkaBuilder) BuildProducer() (*bpProducer, error) {
+func (bpb *BpKafkaBuilder) BuildProducer() (*BpProducer, error) {
 	p, err := kafka.NewProducer(bpb.config)
 	if err != nil {
 		return nil, err
 	}
-	bpp := new(bpProducer)
+	bpp := new(BpProducer)
 	bpp.producer = p
 	return bpp, err
 }
 
-func (bpp *bpProducer) Produce(topic string, key []byte, value []byte) (err error) {
+func (bpp *BpProducer) Produce(topic string, key []byte, value []byte) (err error) {
 
 	// Optional delivery channel, if not specified the Producer object's
 	// .Events channel is used.
