@@ -16,4 +16,10 @@ const (
 	KafkaConfigEnable      = "BP_KAFKA_CONFIG_ENABLE"
 	KafkaConfigPath        = "BP_KAFKA_CONFIG_PATH"
 	KafkaSchemaRegistryUrl = "BP_KAFKA_SCHEMA_REGISTRY_URL"
+
+	//redis env key
+	RedisHost = "BP_REDIS_HOST"
+	RedisPort = "BP_REDIS_PORT"
+	RedisPass = "BP_REDIS_PASS"
+	RedisDb   = "BP_REDIS_DB"
 )
