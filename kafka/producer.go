@@ -47,6 +47,8 @@ func (bpp *BpProducer) Produce(topic string, key []byte, value []byte) (err erro
 			*m.TopicPartition.Topic, m.TopicPartition.Partition, m.TopicPartition.Offset)
 	}
 
+	// 还是要关闭producer不然会占用资源（200-500+顺序压测出现线程无法调用情况），我曾在调用方写单例发现库中封装太好了，啥都取不到
+	bpp.producer.Close()
 	close(deliveryChan)
 
 	return
