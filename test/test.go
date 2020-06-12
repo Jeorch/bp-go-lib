@@ -17,7 +17,9 @@ func SetEnv() {
 	_ = os.Setenv(env.LogLevel, "info")
 
 	//kafka
-	_ = os.Setenv(env.KafkaConfigPath, "../resources/kafka_config.json")
-	_ = os.Setenv(env.KafkaSchemaRegistryUrl, "http://123.56.179.133:8081")
+	//_ = os.Setenv(env.KafkaConfigPath, "../resources/kafka_config.json")
+	//_ = os.Setenv(env.KafkaSchemaRegistryUrl, "http://123.56.179.133:8081")
+	_ = os.Setenv(env.KafkaConfigPath, "../resources/dev-config/kafka_config.json")
+	_ = os.Setenv(env.KafkaSchemaRegistryUrl, "http://schema.message:8081")
 
 }

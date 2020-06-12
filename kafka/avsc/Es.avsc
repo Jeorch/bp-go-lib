@@ -1,0 +1,29 @@
+{
+  "type": "record",
+  "name": "es",
+  "fields": [{
+    "name": "time",
+    "type": "string"
+  }, {
+    "name": "hostname",
+    "type": "string"
+  }, {
+    "name": "ip",
+    "type": "string"
+  }, {
+    "name": "cpu",
+    "type": "string"
+  }, {
+    "name": "memory",
+    "type": "string"
+  }, {
+    "name": "disk",
+    "type": "string"
+  }, {
+    "name": "receive",
+    "type": "string"
+  }, {
+    "name": "transmit",
+    "type": "string"
+  }]
+}

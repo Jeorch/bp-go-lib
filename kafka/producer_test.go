@@ -1,7 +1,8 @@
 package kafka
 
 import (
-	"github.com/PharbersDeveloper/bp-go-lib/kafka/record"
+	"encoding/json"
+	"github.com/PharbersDeveloper/bp-go-lib/kafka/record/PhEventMsg"
 	"github.com/PharbersDeveloper/bp-go-lib/test"
 	"testing"
 )
@@ -14,7 +15,7 @@ func TestProduce(t *testing.T) {
 	if err != nil {
 		panic(err.Error())
 	}
-	err = p.Produce("test", []byte("key002"), []byte("value002"))
+	err = p.Produce("test", []byte("key003"), []byte("value003"))
 	if err != nil {
 		panic(err.Error())
 	}
@@ -25,14 +26,24 @@ func TestProduceAvro(t *testing.T) {
 
 	test.SetEnv()
 
-	topic := "test006"
-	requestRecord := record.ExampleRequest{
-		JobId:   "job-002",
-		Tag:     "MAX",
-		Configs: []string{
-			"config-1",
-			"config-2",
-		},
+	topic := "oss_msg_gen_cube"
+
+	json, err := json.Marshal(map[string]string{
+		"InputDataType": "hive",
+		"InputPath": "SELECT * FROM result",
+		"OutputDataType": "es",
+		"OutputPath": "ekscube2",
+		"strategy": "handle-hive-result",
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+
+	requestRecord := PhEventMsg.EventMsg{
+		JobId:   "testId",
+		TraceId: "testId",
+		Type:    "GenCube-Start",
+		Data:    string(json),
 	}
 
 	specificRecordByteArr, err := EncodeAvroRecord(&requestRecord)
@@ -45,7 +56,7 @@ func TestProduceAvro(t *testing.T) {
 		panic(err.Error())
 	}
 
-	err = p.Produce(topic, []byte("avro-key003"), specificRecordByteArr)
+	err = p.Produce(topic, []byte("testId"), specificRecordByteArr)
 	if err != nil {
 		panic(err.Error())
 	}

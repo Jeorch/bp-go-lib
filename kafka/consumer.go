@@ -46,6 +46,7 @@ func (bpc *BpConsumer) Consume(topic string, subscribeFunc func(interface{}, int
 
 			switch e := ev.(type) {
 			case *kafka.Message:
+				fmt.Println(e.TopicPartition.Offset.String())
 				subscribeFunc(e.Key, e.Value)
 			case kafka.Error:
 				// Errors should generally be considered

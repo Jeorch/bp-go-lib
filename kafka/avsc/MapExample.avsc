@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "name": "MapExample",
+  "namespace": "com.pharbers.kafka.schema",
+  "fields": [
+    {
+      "name": "testMap",
+      "type": {
+        "values": "string",
+        "type": "map"
+      }
+    }
+  ]
+}

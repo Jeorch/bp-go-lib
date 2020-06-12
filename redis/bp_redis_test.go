@@ -21,13 +21,38 @@ func TestGetRedisClient(t *testing.T) {
 		panic(err.Error())
 	}
 
-	c.Set("HELLO", "3Q VERY MUCH", 10 * time.Minute)
-	result, err := c.Get("HELLO").Result()
-	if err != nil {
-		panic(err.Error())
+	{
+		c.Set("HELLO", "3Q VERY MUCH", 10 * time.Minute)
+		result, err := c.Get("HELLO").Result()
+		if err != nil {
+			panic(err.Error())
+		}
+		fmt.Println(result)
 	}
-	fmt.Println(result)
 
+	{
+		i, err := c.Exists("HELLO").Result()
+		if err != nil {
+			panic(err.Error())
+		}
+		fmt.Println("exist ", i)
+	}
+
+	{
+		i, err := c.Del("HELLO").Result()
+		if err != nil {
+			panic(err.Error())
+		}
+		fmt.Println("del ", i)
+	}
+
+	{
+		i, err := c.Exists("HELLO").Result()
+		if err != nil {
+			panic(err.Error())
+		}
+		fmt.Println("exist ", i)
+	}
 
 }
 
